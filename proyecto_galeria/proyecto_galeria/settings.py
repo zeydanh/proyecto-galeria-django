@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "rest_framework",
+    "rest_framework_simplejwt", # Para JWT
+    "django_filters",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
 ]
 
 MIDDLEWARE = [
@@ -133,3 +138,30 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_REDIRECT_URL = 'inicio'  # Redirigir al inicio después del login
 LOGOUT_REDIRECT_URL = 'inicio'  # Redirigir al inicio después del logout
 LOGIN_URL = 'login'  # URL para el login
+REST_FRAMEWORK = {
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        # Permitirá usar la API desde el navegador si estás logueado en el admin
+        "rest_framework.authentication.SessionAuthentication",
+        # Autenticación con JWT (más segura y estándar)
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        # Cualquiera puede leer (GET), pero solo usuarios autenticados pueden escribir (POST, PUT, DELETE)
+        "rest_framework.permissions.IsAuthenticatedOrReadOnly",
+    ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+        "rest_framework.filters.SearchFilter",
+        "rest_framework.filters.OrderingFilter",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10, # Número de posts por página en los listados de la API
+}
+
+SPECTACULAR_SETTINGS = {
+    "TITLE": "KoyPics API", # Título de tu API
+    "DESCRIPTION": "API para la galería de imágenes KoyPics, permite gestionar posts, comentarios, votos y comunidades.",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
