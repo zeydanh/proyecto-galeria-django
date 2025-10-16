@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Explora la Comunidad{% endblock %}
+{% block title %}c/{{ comunidad.nombre }} - KoyPics{% endblock %}
 
 {% block content %}
 <script>
@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function() {
     .vote-count { font-weight: bold; font-size: 14px; margin: 8px 0; }
     .post-content { padding: 16px; display: flex; flex-direction: column; width: 100%; }
     .post-meta { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px; }
-    .post-meta a { text-decoration: none; }
     .post-meta strong { color: var(--color-text-primary); font-weight: 600; }
     .post-title { font-size: 20px; margin-bottom: 12px; }
     .post-image-container { max-height: 500px; overflow: hidden; border-radius: 4px; }
@@ -56,11 +55,13 @@ document.addEventListener('DOMContentLoaded', function() {
     .community-list li { list-style: none; padding: 8px 0; }
     .community-list a { text-decoration: none; color: var(--color-text-primary); font-weight: 500; }
     .community-list a:hover { color: var(--color-primary-hover); }
+    .page-title { font-size: 2rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--color-border); padding-bottom: 1rem; }
     @media (max-width: 900px) { .main-layout { flex-direction: column-reverse; } .sidebar { width: 100%; } }
 </style>
 
 <div class="main-layout">
     <div class="post-feed">
+        <h1 class="page-title">Viendo posts en c/{{ comunidad.nombre }}</h1>
         {% for post in posts %}
             <article class="post-card">
                 <div class="vote-section">
@@ -71,10 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <a href="{% url 'post_detail' post.id %}" class="post-link" style="width: 100%;">
                     <div class="post-content">
                         <div class="post-meta">
-                           {% if post.comunidad %}
-                               <a href="{% url 'comunidad_detail' post.comunidad.nombre %}"><strong>c/{{ post.comunidad.nombre }}</strong></a> •
-                           {% endif %}
-                           Publicado por <a href="{% url 'perfil' username=post.autor.username %}"><strong>{{ post.autor.username }}</strong></a>
+                           Publicado por <strong>{{ post.autor.username }}</strong>
                         </div>
                         <h2 class="post-title">{{ post.titulo }}</h2>
                         <div class="post-image-container">
@@ -88,8 +86,8 @@ document.addEventListener('DOMContentLoaded', function() {
             </article>
         {% empty %}
             <div class="sidebar-widget">
-                <h3>Aún no hay posts</h3>
-                <p>¡Sé el primero en compartir algo con la comunidad!</p>
+                <h3>No hay posts en esta comunidad</h3>
+                <p>¡Sé el primero en compartir algo aquí!</p>
             </div>
         {% endfor %}
     </div>
@@ -98,10 +96,8 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="sidebar-widget">
             <h3 class="widget-title">Comunidades</h3>
             <ul class="community-list">
-                {% for comunidad in comunidades %}
-                    <li><a href="{% url 'comunidad_detail' comunidad.nombre %}">🌐 c/{{ comunidad.nombre }}</a></li>
-                {% empty %}
-                    <li>Aún no hay comunidades.</li>
+                {% for com in comunidades %}
+                    <li><a href="{% url 'comunidad_detail' com.nombre %}">🌐 c/{{ com.nombre }}</a></li>
                 {% endfor %}
             </ul>
         </div>

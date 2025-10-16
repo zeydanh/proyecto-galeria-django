@@ -1,10 +1,24 @@
+# proyecto_galeria/Galeria_imagenes/forms.py
+
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-# CORRECCIÓN: Importar solo el modelo 'Post'
-from .models import Post
+from .models import Post, Comentario
 
-# Forma NUEVA Y ÚNICA para subir imágenes (ahora posts)
+class ComentarioForm(forms.ModelForm):
+    class Meta:
+        model = Comentario
+        fields = ['contenido']
+        widgets = {
+            'contenido': forms.Textarea(attrs={
+                'rows': 4, 
+                'placeholder': 'Escribe tu comentario aquí...'
+            }),
+        }
+        labels = {
+            'contenido': ''
+        }
+
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post
@@ -16,7 +30,6 @@ class PostForm(forms.ModelForm):
             'archivo': 'Seleccionar imagen'
         }
 
-# El formulario de registro de usuario se mantiene igual
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(
         required=True,
@@ -35,13 +48,12 @@ class UserRegisterForm(UserCreationForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Personalizar mensajes de error y ayuda para contraseña
         self.fields['password1'].help_text = """
         <ul>
-            <li>Su contraseña no puede ser demasiado similar a su otra información personal.</li>
+            <li>Su contraseña no puede ser demasiado similar a su otra informaciÃ³n personal.</li>
             <li>Su contraseña debe contener al menos 8 caracteres.</li>
-            <li>Su contraseña no puede ser una contraseña de uso común.</li>
-            <li>Su contraseña no puede ser enteramente numérica.</li>
+            <li>Su contraseña no puede ser una contraseña de uso comÃºn.</li>
+            <li>Su contraseña no puede ser enteramente numÃ©rica.</li>
         </ul>
         """
         
