@@ -1,168 +1,101 @@
 {% extends 'base.html' %}
 
-{% block title %}Registro - Galería{% endblock %}
+{% block title %}Crear Cuenta - KoyPics{% endblock %}
 
 {% block content %}
 <style>
-    .register-container {
-        background: rgba(30, 30, 40, 0.9);
-        border-radius: 12px;
+    /* Usamos los mismos estilos base que en la página de login */
+    .auth-container {
+        max-width: 480px;
+        margin: 2rem auto;
         padding: 40px;
-        max-width: 500px;
-        margin: 0 auto;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(80, 100, 150, 0.2);
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
     }
-
-    .register-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #ff9800, #f57c00);
-    }
-
-    .register-title {
+    .auth-title {
         text-align: center;
-        margin-bottom: 30px;
         font-size: 2rem;
-        color: #e0e0ff;
-        position: relative;
-        padding-bottom: 15px;
+        margin-bottom: 30px;
+        color: var(--color-text-primary);
     }
-
-    .register-title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 30%;
-        width: 40%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #ff9800, transparent);
-    }
-
     .form-group {
         margin-bottom: 20px;
     }
-
     .form-group label {
         display: block;
         margin-bottom: 8px;
-        font-weight: 600;
-        color: #d0d0ff;
-        font-size: 1rem;
+        font-weight: 500;
+        color: var(--color-text-secondary);
     }
-
     .form-group input {
         width: 100%;
         padding: 12px 15px;
-        background: rgba(20, 20, 30, 0.7);
-        border: 1px solid rgba(80, 100, 150, 0.3);
-        border-radius: 6px;
-        color: #ffffff;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        color: var(--color-text-primary);
         font-size: 1rem;
-        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+        transition: border-color 0.3s, box-shadow 0.3s;
     }
-
     .form-group input:focus {
         outline: none;
-        border-color: #ff9800;
-        box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.2);
+        /* CAMBIO: Usamos el color primario (verde) en lugar del de acento */
+        border-color: var(--color-primary); 
+        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
     }
-
-    .help-text {
-        font-size: 0.8rem;
-        color: #8888aa;
-        margin-top: 5px;
-        line-height: 1.4;
-    }
-
-    .help-text ul {
-        margin: 5px 0;
-        padding-left: 20px;
-    }
-
-    .help-text li {
-        margin-bottom: 3px;
-    }
-
-    .errorlist {
-        color: #ff6b6b;
-        margin-top: 5px;
-        list-style-type: none;
-        font-size: 0.8rem;
-        background: rgba(120, 30, 30, 0.2);
-        padding: 5px 10px;
-        border-radius: 4px;
-        border-left: 3px solid #ff6b6b;
-    }
-
     .submit-btn {
-        background: linear-gradient(135deg, #ff9800, #f57c00);
-        color: white;
-        border: none;
+        width: 100%;
         padding: 14px 20px;
-        border-radius: 6px;
+        /* CAMBIO: Usamos el color primario (verde) para el botón */
+        background-color: var(--color-primary); 
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
         font-size: 1.1rem;
         font-weight: 600;
+        font-family: 'Inter', sans-serif;
         cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-        margin-top: 10px;
+        transition: background-color 0.3s;
     }
-
     .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+        /* CAMBIO: Usamos el hover del color primario */
+        background-color: var(--color-primary-hover);
     }
-
-    .login-link {
+    .switch-form-link {
         display: block;
         text-align: center;
         margin-top: 25px;
-        color: #a0a0ff;
+        color: var(--color-text-secondary);
         text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s ease;
     }
-
-    .login-link:hover {
-        color: #ffffff;
-    }
-
-    .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 15px;
-        color: #8888aa;
+    .switch-form-link a {
+        color: var(--color-primary);
+        font-weight: 600;
         text-decoration: none;
+    }
+    
+    /* Estilos para los textos de ayuda y errores de Django */
+    .help-text, .errorlist {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        margin-top: 8px;
+        padding-left: 0;
+        list-style-type: none;
+    }
+    .help-text ul {
+        padding-left: 1rem;
+    }
+    .errorlist {
+        color: #ff6b6b;
         font-weight: 500;
-        transition: color 0.3s ease;
     }
 
-    .back-link:hover {
-        color: #ffffff;
-    }
-
-    @media (max-width: 600px) {
-        .register-container {
-            padding: 25px 20px;
-            margin: 0 10px;
-        }
-        
-        .register-title {
-            font-size: 1.7rem;
-        }
-    }
 </style>
 
-<div class="register-container">
-    <h2 class="register-title">Crear Cuenta</h2>
+<div class="auth-container">
+    <h2 class="auth-title">Crear una Cuenta</h2>
     
     <form method="post">
         {% csrf_token %}
@@ -183,7 +116,8 @@
         <button type="submit" class="submit-btn">Registrarse</button>
     </form>
     
-    <a href="{% url 'login' %}" class="login-link">¿Ya tienes cuenta? Inicia Sesión</a>
-    <a href="{% url 'inicio' %}" class="back-link">← Volver a la galería</a>
+    <p class="switch-form-link">
+        ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia Sesión</a>
+    </p>
 </div>
 {% endblock %}

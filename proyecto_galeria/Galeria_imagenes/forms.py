@@ -1,17 +1,22 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Galeria_imagenes
+# CORRECCIÓN: Importar solo el modelo 'Post'
+from .models import Post
 
-class Galeria_imagenesForm(forms.ModelForm):
+# Forma NUEVA Y ÚNICA para subir imágenes (ahora posts)
+class PostForm(forms.ModelForm):
     class Meta:
-        model = Galeria_imagenes
-        fields = ['titulo', 'archivo']
+        model = Post
+        fields = ['titulo', 'descripcion', 'comunidad', 'archivo']
         labels = {
-            'titulo': 'Título de la imagen',
-            'archivo': 'Seleccionar archivo'
+            'titulo': 'Título del post',
+            'descripcion': 'Descripción (opcional)',
+            'comunidad': 'Elige una comunidad (opcional)',
+            'archivo': 'Seleccionar imagen'
         }
 
+# El formulario de registro de usuario se mantiene igual
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField(
         required=True,

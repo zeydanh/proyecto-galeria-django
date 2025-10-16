@@ -3,319 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Galería de Imágenes{% endblock %}</title>
+    <title>{% block title %}KoyPics{% endblock %}</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Nueva paleta de colores: verde, blanco, gris, amarillo y naranja */
         :root {
-            --verde-principal: #27ae60;
-            --verde-oscuro: #219a52;
-            --verde-claro: #2ecc71;
-            --gris-oscuro: #1a1a1a;
-            --gris-medio: #2d2d2d;
-            --gris-claro: #444444;
-            --blanco: #ffffff;
-            --amarillo: #ffa726;
-            --naranja: #ff9800;
-            --naranja-oscuro: #f57c00;
+            --color-background: #121212;
+            --color-surface: #1e1e1e;
+            --color-border: #333333;
+            --color-text-primary: #e0e0e0;
+            --color-text-secondary: #a0a0a0;
+            --color-primary: #27ae60;
+            --color-primary-hover: #2ecc71;
+            --color-accent: #ffa726;
         }
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            background-color: #121212;
-            color: var(--blanco);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--color-background);
+            color: var(--color-text-primary);
+            font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            min-height: 100vh;
-            background-image: 
-                radial-gradient(circle at 20% 30%, rgba(40, 60, 40, 0.4) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(30, 50, 30, 0.4) 0%, transparent 50%),
-                linear-gradient(135deg, #121212 0%, var(--gris-oscuro) 100%);
         }
 
-        .header {
-            background: rgba(30, 30, 30, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        .main-header {
+            background-color: var(--color-surface);
+            border-bottom: 1px solid var(--color-border);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 1000;
+            backdrop-filter: blur(10px);
         }
 
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
 
-        .logo h1 {
-            background: linear-gradient(90deg, var(--blanco), var(--verde-claro));
+        .logo a { text-decoration: none; color: var(--color-text-primary); font-size: 1.5rem; font-weight: 700; }
+        .logo a span {
+             background: linear-gradient(90deg, var(--color-primary), var(--color-primary-hover));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
-            font-size: 1.8rem;
         }
 
-        .nav-buttons {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            flex-wrap: wrap;
+        .search-bar { flex-grow: 1; margin: 0 40px; max-width: 500px; }
+        .search-bar input {
+            width: 100%;
+            padding: 10px 15px;
+            background-color: var(--color-background);
+            border: 1px solid var(--color-border);
+            border-radius: 20px;
+            color: var(--color-text-primary);
+            font-size: 1rem;
         }
+
+        .nav-buttons { display: flex; gap: 15px; align-items: center; }
 
         .nav-button {
-            background: linear-gradient(135deg, var(--gris-medio), var(--gris-claro));
-            color: var(--blanco);
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 25px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            cursor: pointer;
-            font-size: 0.9rem;
-        }
-
-        .nav-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .login-button {
-            background: linear-gradient(135deg, var(--verde-principal), var(--verde-oscuro)) !important;
-        }
-
-        .logout-button {
-            background: linear-gradient(135deg, #e74c3c, #c0392b) !important;
-        }
-
-        .register-button {
-            background: linear-gradient(135deg, var(--naranja), var(--naranja-oscuro)) !important;
-        }
-
-        .upload-button {
-            background: linear-gradient(135deg, var(--amarillo), var(--naranja)) !important;
-        }
-
-        .user-info {
-            background: linear-gradient(135deg, var(--verde-claro), var(--verde-principal));
-            color: var(--blanco);
+            background-color: transparent;
+            color: var(--color-text-secondary);
             padding: 8px 16px;
+            text-decoration: none;
             border-radius: 20px;
             font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid var(--color-border);
+            cursor: pointer;
             font-size: 0.9rem;
+            white-space: nowrap; /* Evita que el texto se parta en dos líneas */
         }
+        .nav-button:hover { color: var(--color-text-primary); border-color: var(--color-text-secondary); }
+        .nav-button.primary { background-color: var(--color-primary); border-color: var(--color-primary); color: #fff; }
+        .nav-button.primary:hover { background-color: var(--color-primary-hover); border-color: var(--color-primary-hover); }
+        
+        .main-content { padding: 2rem 0; min-height: calc(100vh - 200px); }
+        
+        .messages { margin-bottom: 1.5rem; }
+        .alert { padding: 15px; border-radius: 8px; border-left: 4px solid; }
+        .alert-success { background: rgba(39, 174, 96, 0.1); border-color: var(--color-primary); color: var(--color-primary-hover); }
 
-        .main-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 2rem 20px;
-            min-height: calc(100vh - 200px);
-        }
-
-        .messages {
-            max-width: 1200px;
-            margin: 0 auto 2rem auto;
-            padding: 0 20px;
-        }
-
-        .alert {
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            border-left: 4px solid;
-        }
-
-        .alert-success {
-            background: rgba(39, 174, 96, 0.1);
-            border-color: var(--verde-principal);
-            color: var(--verde-claro);
-        }
-
-        .alert-error {
-            background: rgba(231, 76, 60, 0.1);
-            border-color: #e74c3c;
-            color: #e74c3c;
-        }
-
-        .alert-info {
-            background: rgba(52, 152, 219, 0.1);
-            border-color: #3498db;
-            color: #3498db;
-        }
-
-        .alert-warning {
-            background: rgba(243, 156, 18, 0.1);
-            border-color: var(--naranja);
-            color: var(--amarillo);
-        }
-
-        .footer {
-            background: rgba(30, 30, 30, 0.95);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 2rem 0;
+        .main-footer {
+            background-color: var(--color-surface);
+            border-top: 1px solid var(--color-border);
+            padding: 3rem 0;
             margin-top: auto;
         }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            text-align: center;
-            color: #888;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .mt-1 { margin-top: 1rem; }
-        .mt-2 { margin-top: 2rem; }
-        .mb-1 { margin-bottom: 1rem; }
-        .mb-2 { margin-bottom: 2rem; }
-
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .nav-buttons {
-                justify-content: center;
-            }
-
-            .nav-button {
-                font-size: 0.8rem;
-                padding: 8px 16px;
-            }
-
-            .main-content {
-                padding: 1rem 15px;
-            }
-        }
-
-        .particles {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-        }
-
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background-color: rgba(39, 174, 96, 0.3);
-            border-radius: 50%;
-            animation: float 15s infinite linear;
-        }
-
-        @keyframes float {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(100px);
-                opacity: 0;
-            }
-        }
+        .footer-content { text-align: center; color: var(--color-text-secondary); }
     </style>
-    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <div class="particles" id="particles"></div>
     
-    <header class="header">
-        <div class="nav-container">
+    <header class="main-header">
+        <div class="container nav-container">
             <div class="logo">
-                <h1>🎨 Galería de Imágenes</h1>
+                <a href="{% url 'inicio' %}"><span>K</span>oyPics</a>
             </div>
+
+            <div class="search-bar">
+                <input type="text" placeholder="Buscar en KoyPics...">
+            </div>
+
             <div class="nav-buttons">
-                <a href="{% url 'inicio' %}" class="nav-button">🏠 Inicio</a>
-                
                 {% if user.is_authenticated %}
-                    <a href="{% url 'registrar_imagen' %}" class="nav-button upload-button">📤 Subir Imagen</a>
-                    <span class="user-info">👤 {{ user.username }}</span>
+                    {# --- AQUÍ ESTÁ EL CAMBIO --- #}
+                    {# Lo convertimos en un enlace con la clase 'nav-button' #}
+                    <a href="#" class="nav-button">👤 {{ user.username }}</a>
+                    {# ------------------------- #}
+                    <a href="{% url 'registrar_imagen' %}" class="nav-button primary">Crear Post</a>
                     <form action="{% url 'logout' %}" method="post" style="display: inline;">
                         {% csrf_token %}
-                        <button type="submit" class="nav-button logout-button">🚪 Cerrar Sesión</button>
+                        <button type="submit" class="nav-button">Salir</button>
                     </form>
                 {% else %}
-                    <a href="{% url 'login' %}" class="nav-button login-button">🔐 Iniciar Sesión</a>
-                    <a href="{% url 'registro' %}" class="nav-button register-button">📝 Crear Cuenta</a>
-                    <a href="{% url 'registrar_imagen' %}" class="nav-button upload-button">📤 Subir Imagen</a>
+                    <a href="{% url 'login' %}" class="nav-button">Iniciar Sesión</a>
+                    <a href="{% url 'registro' %}" class="nav-button primary">Crear Cuenta</a>
                 {% endif %}
             </div>
         </div>
     </header>
 
-    <div class="messages">
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endif %}
-    </div>
-
     <main class="main-content">
-        {% block content %}
-        {% endblock %}
+        <div class="container">
+            {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {% block content %}{% endblock %}
+        </div>
     </main>
 
-    <footer class="footer">
-        <div class="footer-content">
-            <p>&copy; 2024 Galería de Imágenes - Desarrollado con Django</p>
-            <p>Sistema de gestión y visualización de imágenes</p>
+    <footer class="main-footer">
+        <div class="container footer-content">
+            <p>&copy; {% now "Y" %} KoyPics - Tu comunidad visual.</p>
         </div>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const particlesContainer = document.getElementById('particles');
-            const particleCount = 30;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.classList.add('particle');
-                
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                particle.style.left = `${posX}%`;
-                particle.style.top = `${posY}%`;
-                
-                const size = Math.random() * 3 + 1;
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                
-                const delay = Math.random() * 15;
-                particle.style.animationDelay = `${delay}s`;
-                
-                particlesContainer.appendChild(particle);
-            }
-        });
-    </script>
-
-    {% block extra_js %}{% endblock %}
 </body>
 </html>

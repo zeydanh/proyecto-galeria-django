@@ -1,151 +1,103 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}Subir Imagen - Galería{% endblock %}
+{% block title %}Crear Nuevo Post - KoyPics{% endblock %}
 
 {% block content %}
 <style>
-    .form-container {
-        background: rgba(30, 30, 40, 0.9);
-        border-radius: 12px;
+    /* Reutilizamos los estilos de los otros formularios para mantener la consistencia */
+    .auth-container {
+        max-width: 600px; /* Un poco más ancho para este formulario */
+        margin: 2rem auto;
         padding: 40px;
-        max-width: 500px;
-        margin: 0 auto;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(80, 100, 150, 0.2);
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
     }
-
-    .form-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #ffa726, #ff9800);
-    }
-
-    .form-title {
+    .auth-title {
         text-align: center;
-        margin-bottom: 30px;
         font-size: 2rem;
-        color: #e0e0ff;
-        position: relative;
-        padding-bottom: 15px;
+        margin-bottom: 30px;
+        color: var(--color-text-primary);
     }
-
-    .form-title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 30%;
-        width: 40%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #ffa726, transparent);
-    }
-
     .form-group {
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
-
     .form-group label {
         display: block;
         margin-bottom: 8px;
-        font-weight: 600;
-        color: #d0d0ff;
-        font-size: 1rem;
+        font-weight: 500;
+        color: var(--color-text-secondary);
     }
-
+    /* Estilo general para todos los inputs y selects */
     .form-group input,
-    .form-group textarea {
+    .form-group textarea,
+    .form-group select {
         width: 100%;
         padding: 12px 15px;
-        background: rgba(20, 20, 30, 0.7);
-        border: 1px solid rgba(80, 100, 150, 0.3);
-        border-radius: 6px;
-        color: #ffffff;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        color: var(--color-text-primary);
         font-size: 1rem;
-        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+        transition: border-color 0.3s, box-shadow 0.3s;
     }
-
     .form-group input:focus,
-    .form-group textarea:focus {
+    .form-group textarea:focus,
+    .form-group select:focus {
         outline: none;
-        border-color: #ffa726;
-        box-shadow: 0 0 0 2px rgba(255, 167, 38, 0.2);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
     }
-
-    input[type="file"] {
+    /* Estilo específico para el input de archivo */
+    .form-group input[type="file"] {
         padding: 10px;
-        background: rgba(20, 20, 30, 0.7);
-        border: 1px dashed rgba(80, 100, 150, 0.5);
-        border-radius: 6px;
-        transition: all 0.3s ease;
-    }
-
-    input[type="file"]:focus {
-        border-style: solid;
-        border-color: #ffa726;
+        border-style: dashed;
     }
 
     .submit-btn {
-        background: linear-gradient(135deg, #ffa726, #ff9800);
-        color: white;
-        border: none;
+        width: 100%;
         padding: 14px 20px;
-        border-radius: 6px;
+        background-color: var(--color-primary);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
         font-size: 1.1rem;
         font-weight: 600;
+        font-family: 'Inter', sans-serif;
         cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-        margin-top: 10px;
+        transition: background-color 0.3s;
     }
-
     .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(255, 167, 38, 0.4);
+        background-color: var(--color-primary-hover);
     }
-
-    .back-link {
-        display: block;
-        text-align: center;
-        margin-top: 20px;
-        color: #a0a0ff;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s ease;
-    }
-
-    .back-link:hover {
-        color: #ffffff;
-    }
-
     .errorlist {
-        color: #ff6b6b;
-        margin-top: 5px;
         list-style-type: none;
+        padding: 0;
+        margin-top: 5px;
+        color: #ff6b6b;
+        font-weight: 500;
         font-size: 0.9rem;
-        background: rgba(120, 30, 30, 0.2);
-        padding: 5px 10px;
-        border-radius: 4px;
-        border-left: 3px solid #ff6b6b;
-    }
-
-    @media (max-width: 600px) {
-        .form-container {
-            padding: 25px 20px;
-            margin: 0 10px;
-        }
-        
-        .form-title {
-            font-size: 1.7rem;
-        }
     }
 </style>
 
-<div class="form-container">
-    <h2 class
+<div class="auth-container">
+    <h2 class="auth-title">Crear un Nuevo Post</h2>
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <div class="errorlist">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="submit-btn">Publicar</button>
+    </form>
+</div>
+{% endblock %}

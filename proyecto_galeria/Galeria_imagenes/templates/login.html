@@ -1,151 +1,89 @@
 {% extends 'base.html' %}
 
-{% block title %}Iniciar Sesión - Galería{% endblock %}
+{% block title %}Iniciar Sesión - KoyPics{% endblock %}
 
 {% block content %}
 <style>
-    .login-container {
-        background: rgba(30, 30, 40, 0.9);
-        border-radius: 12px;
-        padding: 40px;
+    .auth-container {
         max-width: 450px;
-        margin: 0 auto;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        border: 1px solid rgba(80, 100, 150, 0.2);
-        backdrop-filter: blur(10px);
-        position: relative;
-        overflow: hidden;
+        margin: 2rem auto;
+        padding: 40px;
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
     }
-
-    .login-container::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 4px;
-        background: linear-gradient(90deg, #27ae60, #219a52);
-    }
-
-    .login-title {
+    .auth-title {
         text-align: center;
-        margin-bottom: 30px;
         font-size: 2rem;
-        color: #e0e0ff;
-        position: relative;
-        padding-bottom: 15px;
+        margin-bottom: 30px;
+        color: var(--color-text-primary);
     }
-
-    .login-title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 30%;
-        width: 40%;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #27ae60, transparent);
-    }
-
     .form-group {
-        margin-bottom: 25px;
+        margin-bottom: 20px;
     }
-
     .form-group label {
         display: block;
         margin-bottom: 8px;
-        font-weight: 600;
-        color: #d0d0ff;
-        font-size: 1rem;
+        font-weight: 500;
+        color: var(--color-text-secondary);
     }
-
     .form-group input {
         width: 100%;
         padding: 12px 15px;
-        background: rgba(20, 20, 30, 0.7);
-        border: 1px solid rgba(80, 100, 150, 0.3);
-        border-radius: 6px;
-        color: #ffffff;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        color: var(--color-text-primary);
         font-size: 1rem;
-        transition: all 0.3s ease;
+        font-family: 'Inter', sans-serif;
+        transition: border-color 0.3s, box-shadow 0.3s;
     }
-
     .form-group input:focus {
         outline: none;
-        border-color: #27ae60;
-        box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+        border-color: var(--color-primary);
+        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
     }
-
     .submit-btn {
-        background: linear-gradient(135deg, #27ae60, #219a52);
-        color: white;
-        border: none;
+        width: 100%;
         padding: 14px 20px;
-        border-radius: 6px;
+        background-color: var(--color-primary);
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
         font-size: 1.1rem;
         font-weight: 600;
+        font-family: 'Inter', sans-serif;
         cursor: pointer;
-        transition: all 0.3s ease;
-        width: 100%;
-        margin-top: 10px;
+        transition: background-color 0.3s;
     }
-
     .submit-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        background-color: var(--color-primary-hover);
     }
-
-    .back-link {
+    .switch-form-link {
         display: block;
         text-align: center;
         margin-top: 25px;
-        color: #a0a0ff;
+        color: var(--color-text-secondary);
         text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s ease;
     }
-
-    .back-link:hover {
-        color: #ffffff;
+    .switch-form-link a {
+        color: var(--color-primary);
+        font-weight: 600;
+        text-decoration: none;
     }
-
     .error-message {
         color: #ff6b6b;
         background: rgba(120, 30, 30, 0.2);
-        padding: 10px;
-        border-radius: 6px;
+        padding: 12px;
+        border-radius: 8px;
         margin-bottom: 20px;
         border-left: 3px solid #ff6b6b;
         text-align: center;
     }
-
-    .register-link {
-        display: block;
-        text-align: center;
-        margin-top: 15px;
-        color: #ff9800;
-        text-decoration: none;
-        font-weight: 500;
-        transition: color 0.3s ease;
-    }
-
-    .register-link:hover {
-        color: #ffa726;
-    }
-
-    @media (max-width: 600px) {
-        .login-container {
-            padding: 25px 20px;
-            margin: 0 10px;
-        }
-        
-        .login-title {
-            font-size: 1.7rem;
-        }
-    }
 </style>
 
-<div class="login-container">
-    <h2 class="login-title">Iniciar Sesión</h2>
+<div class="auth-container">
+    <h2 class="auth-title">Iniciar Sesión</h2>
     
     {% if form.errors %}
         <div class="error-message">
@@ -157,7 +95,7 @@
         {% csrf_token %}
         
         <div class="form-group">
-            <label for="id_username">Usuario:</label>
+            <label for="id_username">Nombre de usuario:</label>
             <input type="text" name="username" id="id_username" required autofocus>
         </div>
         
@@ -166,10 +104,11 @@
             <input type="password" name="password" id="id_password" required>
         </div>
         
-        <button type="submit" class="submit-btn">Iniciar Sesión</button>
+        <button type="submit" class="submit-btn">Entrar</button>
     </form>
     
-    <a href="{% url 'registro' %}" class="register-link">¿No tienes cuenta? Regístrate</a>
-    <a href="{% url 'inicio' %}" class="back-link">← Volver a la galería</a>
+    <p class="switch-form-link">
+        ¿Aún no tienes cuenta? <a href="{% url 'registro' %}">Regístrate</a>
+    </p>
 </div>
 {% endblock %}
