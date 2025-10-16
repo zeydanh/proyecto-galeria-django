@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Iniciar Sesión - Galería{% endblock %}
+
+{% block content %}
+<style>
+    .login-container {
+        background: rgba(30, 30, 40, 0.9);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 450px;
+        margin: 0 auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(80, 100, 150, 0.2);
+        backdrop-filter: blur(10px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .login-container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: linear-gradient(90deg, #27ae60, #219a52);
+    }
+
+    .login-title {
+        text-align: center;
+        margin-bottom: 30px;
+        font-size: 2rem;
+        color: #e0e0ff;
+        position: relative;
+        padding-bottom: 15px;
+    }
+
+    .login-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 30%;
+        width: 40%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #27ae60, transparent);
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: #d0d0ff;
+        font-size: 1rem;
+    }
+
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        background: rgba(20, 20, 30, 0.7);
+        border: 1px solid rgba(80, 100, 150, 0.3);
+        border-radius: 6px;
+        color: #ffffff;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus {
+        outline: none;
+        border-color: #27ae60;
+        box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+    }
+
+    .submit-btn {
+        background: linear-gradient(135deg, #27ae60, #219a52);
+        color: white;
+        border: none;
+        padding: 14px 20px;
+        border-radius: 6px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+    }
+
+    .back-link {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+        color: #a0a0ff;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .back-link:hover {
+        color: #ffffff;
+    }
+
+    .error-message {
+        color: #ff6b6b;
+        background: rgba(120, 30, 30, 0.2);
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        border-left: 3px solid #ff6b6b;
+        text-align: center;
+    }
+
+    .register-link {
+        display: block;
+        text-align: center;
+        margin-top: 15px;
+        color: #ff9800;
+        text-decoration: none;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .register-link:hover {
+        color: #ffa726;
+    }
+
+    @media (max-width: 600px) {
+        .login-container {
+            padding: 25px 20px;
+            margin: 0 10px;
+        }
+        
+        .login-title {
+            font-size: 1.7rem;
+        }
+    }
+</style>
+
+<div class="login-container">
+    <h2 class="login-title">Iniciar Sesión</h2>
+    
+    {% if form.errors %}
+        <div class="error-message">
+            Usuario o contraseña incorrectos. Por favor, intenta de nuevo.
+        </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="id_username">Usuario:</label>
+            <input type="text" name="username" id="id_username" required autofocus>
+        </div>
+        
+        <div class="form-group">
+            <label for="id_password">Contraseña:</label>
+            <input type="password" name="password" id="id_password" required>
+        </div>
+        
+        <button type="submit" class="submit-btn">Iniciar Sesión</button>
+    </form>
+    
+    <a href="{% url 'registro' %}" class="register-link">¿No tienes cuenta? Regístrate</a>
+    <a href="{% url 'inicio' %}" class="back-link">← Volver a la galería</a>
+</div>
+{% endblock %}
