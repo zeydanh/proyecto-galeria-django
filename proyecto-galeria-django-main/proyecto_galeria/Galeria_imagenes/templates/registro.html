@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Crear Cuenta - KoyPics{% endblock %}
+
+{% block content %}
+<style>
+    /* Usamos los mismos estilos base que en la página de login */
+    .auth-container {
+        max-width: 480px;
+        margin: 2rem auto;
+        padding: 40px;
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 12px;
+    }
+    .auth-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: var(--color-text-primary);
+    }
+    .form-group {
+        margin-bottom: 20px;
+    }
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--color-text-secondary);
+    }
+    .form-group input {
+        width: 100%;
+        padding: 12px 15px;
+        background-color: var(--color-background);
+        border: 1px solid var(--color-border);
+        border-radius: 8px;
+        color: var(--color-text-primary);
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .form-group input:focus {
+        outline: none;
+        /* CAMBIO: Usamos el color primario (verde) en lugar del de acento */
+        border-color: var(--color-primary); 
+        box-shadow: 0 0 0 3px rgba(39, 174, 96, 0.2);
+    }
+    .submit-btn {
+        width: 100%;
+        padding: 14px 20px;
+        /* CAMBIO: Usamos el color primario (verde) para el botón */
+        background-color: var(--color-primary); 
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .submit-btn:hover {
+        /* CAMBIO: Usamos el hover del color primario */
+        background-color: var(--color-primary-hover);
+    }
+    .switch-form-link {
+        display: block;
+        text-align: center;
+        margin-top: 25px;
+        color: var(--color-text-secondary);
+        text-decoration: none;
+    }
+    .switch-form-link a {
+        color: var(--color-primary);
+        font-weight: 600;
+        text-decoration: none;
+    }
+    
+    /* Estilos para los textos de ayuda y errores de Django */
+    .help-text, .errorlist {
+        font-size: 0.85rem;
+        color: var(--color-text-secondary);
+        margin-top: 8px;
+        padding-left: 0;
+        list-style-type: none;
+    }
+    .help-text ul {
+        padding-left: 1rem;
+    }
+    .errorlist {
+        color: #ff6b6b;
+        font-weight: 500;
+    }
+
+</style>
+
+<div class="auth-container">
+    <h2 class="auth-title">Crear una Cuenta</h2>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {% for field in form %}
+            <div class="form-group">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                    <div class="help-text">{{ field.help_text|safe }}</div>
+                {% endif %}
+                {% if field.errors %}
+                    <div class="errorlist">{{ field.errors }}</div>
+                {% endif %}
+            </div>
+        {% endfor %}
+        
+        <button type="submit" class="submit-btn">Registrarse</button>
+    </form>
+    
+    <p class="switch-form-link">
+        ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia Sesión</a>
+    </p>
+</div>
+{% endblock %}

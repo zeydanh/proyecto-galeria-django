@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Perfil de {{ usuario.username }}{% endblock %}
+
+{% block content %}
+<style>
+    /* Reutilizamos los estilos de las otras páginas para consistencia */
+    .profile-header {
+        background-color: var(--color-surface);
+        padding: 2rem;
+        border-radius: 12px;
+        margin-bottom: 2rem;
+        border: 1px solid var(--color-border);
+    }
+    .profile-title {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+    }
+    .profile-meta {
+        color: var(--color-text-secondary);
+        font-size: 1rem;
+    }
+
+    /* Estilos de la lista de posts (tomados de inicio.html) */
+    .post-card { display: flex; background: var(--color-surface); border-radius: 8px; margin-bottom: 20px; overflow: hidden; border: 1px solid var(--color-border); transition: border-color 0.3s, transform 0.3s; }
+    .post-card:hover { border-color: var(--color-primary); transform: translateY(-3px); }
+    a.post-link { text-decoration: none; color: inherit; }
+    .vote-section { display: flex; flex-direction: column; align-items: center; padding: 8px; background: rgba(0,0,0,0.2); }
+    .vote-arrow { text-decoration: none; font-size: 20px; color: #888; cursor: pointer; transition: color 0.2s, transform 0.2s; }
+    .vote-arrow:hover { color: #fff; transform: scale(1.2); }
+    .vote-count { font-weight: bold; font-size: 14px; margin: 8px 0; }
+    .post-content { padding: 16px; display: flex; flex-direction: column; width: 100%; }
+    .post-meta { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 8px; }
+    .post-meta strong { color: var(--color-text-primary); font-weight: 600; }
+    .post-title { font-size: 20px; margin-bottom: 12px; }
+    .post-image-container { max-height: 500px; overflow: hidden; border-radius: 4px; }
+    .post-image-container img { width: 100%; height: auto; }
+    .post-actions { margin-top: 12px; font-size: 13px; font-weight: bold; color: #888; }
+</style>
+
+<div class="profile-header">
+    <h1 class="profile-title">{{ usuario.username }}</h1>
+    <p class="profile-meta">Miembro desde {{ usuario.date_joined|date:"d M, Y" }}</p>
+</div>
+
+<h2 style="margin-bottom: 1.5rem;">Posts creados por {{ usuario.username }}</h2>
+
+<div class="post-feed">
+    {% for post in posts %}
+        <article class="post-card">
+            <div class="vote-section">
+                <a href="{% url 'votar' post_id=post.id valor='positivo' %}" class="vote-arrow">▲</a>
+                <span class="vote-count">{{ post.total_votos }}</span>
+                <a href="{% url 'votar' post_id=post.id valor='negativo' %}" class="vote-arrow">▼</a>
+            </div>
+            <a href="{% url 'post_detail' post.id %}" class="post-link" style="width: 100%;">
+                <div class="post-content">
+                    <div class="post-meta">
+                       {% if post.comunidad %}
+                           <a href="{% url 'comunidad_detail' post.comunidad.nombre %}" style="text-decoration:none;"><strong>c/{{ post.comunidad.nombre }}</strong></a> •
+                       {% endif %}
+                       Publicado {{ post.fecha_creacion|timesince }} atrás
+                    </div>
+                    <h2 class="post-title">{{ post.titulo }}</h2>
+                    <div class="post-image-container">
+                        <img src="{{ post.archivo.url }}" alt="{{ post.titulo }}">
+                    </div>
+                    <div class="post-actions">
+                       <span>💬 {{ post.total_comentarios }} Comentarios</span>
+                    </div>
+                </div>
+            </a>
+        </article>
+    {% empty %}
+        <div style="background: var(--color-surface); padding: 1rem; border-radius: 8px;">
+            <p>{{ usuario.username }} aún no ha publicado nada.</p>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
